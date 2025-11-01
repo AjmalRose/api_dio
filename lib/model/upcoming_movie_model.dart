@@ -1,21 +1,22 @@
 // To parse this JSON data, do
 //
-//     final movie = movieFromJson(jsonString);
+//     final upcomingMovie = upcomingMovieFromJson(jsonString);
 
 import 'dart:convert';
 
-Movie movieFromJson(String str) => Movie.fromJson(json.decode(str));
+UpcomingMovie upcomingMovieFromJson(String str) =>
+    UpcomingMovie.fromJson(json.decode(str));
 
-String movieToJson(Movie data) => json.encode(data.toJson());
+String upcomingMovieToJson(UpcomingMovie data) => json.encode(data.toJson());
 
-class Movie {
+class UpcomingMovie {
   Dates dates;
   int page;
   List<Result> results;
   int totalPages;
   int totalResults;
 
-  Movie({
+  UpcomingMovie({
     required this.dates,
     required this.page,
     required this.results,
@@ -23,7 +24,7 @@ class Movie {
     required this.totalResults,
   });
 
-  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+  factory UpcomingMovie.fromJson(Map<String, dynamic> json) => UpcomingMovie(
     dates: Dates.fromJson(json["dates"]),
     page: json["page"],
     results: List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
@@ -38,8 +39,6 @@ class Movie {
     "total_pages": totalPages,
     "total_results": totalResults,
   };
-
-  static Future upcomingMoviefromjson(data) async {}
 }
 
 class Dates {
@@ -66,7 +65,7 @@ class Result {
   String backdropPath;
   List<int> genreIds;
   int id;
-  String originalLanguage;
+  OriginalLanguage originalLanguage;
   String originalTitle;
   String overview;
   double popularity;
@@ -99,7 +98,7 @@ class Result {
     backdropPath: json["backdrop_path"],
     genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
     id: json["id"],
-    originalLanguage: json["original_language"],
+    originalLanguage: originalLanguageValues.map[json["original_language"]]!,
     originalTitle: json["original_title"],
     overview: json["overview"],
     popularity: json["popularity"]?.toDouble(),
@@ -116,7 +115,7 @@ class Result {
     "backdrop_path": backdropPath,
     "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
     "id": id,
-    "original_language": originalLanguage,
+    "original_language": originalLanguageValues.reverse[originalLanguage],
     "original_title": originalTitle,
     "overview": overview,
     "popularity": popularity,
@@ -128,4 +127,25 @@ class Result {
     "vote_average": voteAverage,
     "vote_count": voteCount,
   };
+}
+
+enum OriginalLanguage { EN, FR, JA, ZH }
+
+final originalLanguageValues = EnumValues({
+  "en": OriginalLanguage.EN,
+  "fr": OriginalLanguage.FR,
+  "ja": OriginalLanguage.JA,
+  "zh": OriginalLanguage.ZH,
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

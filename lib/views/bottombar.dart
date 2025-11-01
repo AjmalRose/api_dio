@@ -7,12 +7,13 @@ class Bottombar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 3, // 👈 3 tabs = 3 TabBarView children needed
       child: Scaffold(
+        backgroundColor: Colors.black,
         bottomNavigationBar: Container(
           color: Colors.black,
-          height: 70,
-          child: TabBar(
+          height: 80,
+          child: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.home_max_outlined), text: "Home"),
               Tab(icon: Icon(Icons.search_outlined), text: "Search"),
@@ -23,7 +24,20 @@ class Bottombar extends StatelessWidget {
             indicatorColor: Colors.red,
           ),
         ),
-        body: TabBarView(children: [AppBars(), Scaffold()]),
+        body: const TabBarView(
+          children: [
+            AppBars(), // 🏠 Home tab
+            Center(
+              child: Text("Search Page", style: TextStyle(color: Colors.white)),
+            ), // 🔍 Search tab
+            Center(
+              child: Text(
+                "Hot News Page",
+                style: TextStyle(color: Colors.white),
+              ),
+            ), // 📰 News tab
+          ],
+        ),
       ),
     );
   }

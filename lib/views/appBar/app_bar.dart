@@ -1,3 +1,4 @@
+import 'package:api_project/views/home.dart';
 import 'package:api_project/views/widgets/materialbutton.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,7 @@ class _AppBarState extends State<AppBars> {
             ),
           ),
           CustomMaterialButtons(),
+          HomePage(),
         ],
       ),
     );
