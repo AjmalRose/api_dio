@@ -1,48 +1,108 @@
+import 'dart:developer';
 import 'package:api_project/model/movie_model.dart';
-import 'package:api_project/model/upcoming_movie_model.dart';
 import 'package:api_project/services/utils.dart';
 import 'package:dio/dio.dart';
 
-class ApiService {
-  final Dio _dio = Dio();
+class ApiServices {
+  final Dio dio = Dio();
 
-  // now playing movies
-  Future<Movie?> fetchMovies() async {
+  Future<List<MovieModel>> nowPlaying() async {
     try {
-      const endPoint = "movie/now_playing";
-      final apiUrl = "$baseUrl$endPoint?api_key=$apiKey";
-
-      final response = await _dio.get(apiUrl);
-
+      final response = await dio.get(Urls.nowPlaying);
       if (response.statusCode == 200) {
-        return Movie.fromJson(response.data);
-      } else {
-        throw Exception("Failed to load movies: ${response.statusCode}");
+        log(
+          "Now playing movies fetched: ${response.data['results'].length} items",
+        );
+        List data = response.data['results'];
+        return data.map((e) => MovieModel.fromJSon(e)).toList();
       }
+      throw Exception("Failed with status : ${response.statusCode}");
     } catch (e) {
-      print("Error fetching movies: $e");
-      return null;
+      log("Error fetching the data: $e");
+      throw [];
     }
   }
 
-  //upcoming movies
-  Future<UpcomingMovie?> upcomingMovie() async {
+  Future<List<MovieModel>> trendingMovies() async {
     try {
-      const endPoint = "movie/upcoming";
-      final apiUrl = "$baseUrl$endPoint?api_key=$apiKey";
-
-      final response = await _dio.get(apiUrl);
-      print("🔹 Upcoming API URL: $apiUrl");
-      print("🔹 Status: ${response.statusCode}");
-
+      final response = await dio.get(Urls.baseUrl);
       if (response.statusCode == 200) {
-        return UpcomingMovie.fromJson(response.data); // ✅ Correct
-      } else {
-        throw Exception("Failed to load movies: ${response.statusCode}");
+        log(
+          "Trending movies fetched: ${response.data['results'].length} items",
+        );
+        List data = response.data['results'];
+        return data.map((e) => MovieModel.fromJSon(e)).toList();
       }
+      throw Exception("Failed with status : ${response.statusCode}");
     } catch (e) {
-      print("❌ Error fetching upcoming movies: $e");
-      return null;
+      log("Error fetching the data: $e");
+      throw [];
+    }
+  }
+
+  Future<List<MovieModel>> topRatedSer() async {
+    try {
+      final response = await dio.get(Urls.toprated);
+      if (response.statusCode == 200) {
+        log(
+          "Top Rated movies fetched: ${response.data['results'].length} items",
+        );
+        List data = response.data['results'];
+        return data.map((e) => MovieModel.fromJSon(e)).toList();
+      }
+      throw Exception("Failed with status : ${response.statusCode}");
+    } catch (e) {
+      log("Error fetching the data: $e");
+      throw [];
+    }
+  }
+
+  Future<List<MovieModel>> upcomingMoviesSer() async {
+    try {
+      final response = await dio.get(Urls.upcomings);
+      if (response.statusCode == 200) {
+        log(
+          "Upcoming movies fetched: ${response.data['results'].length} items",
+        );
+        List data = response.data['results'];
+        return data.map((e) => MovieModel.fromJSon(e)).toList();
+      }
+      throw Exception("Failed with status : ${response.statusCode}");
+    } catch (e) {
+      log("Error fetching the data: $e");
+      throw [];
+    }
+  }
+
+  Future<List<MovieModel>> tvShowsSer() async {
+    try {
+      final response = await dio.get(Urls.tvshows);
+      if (response.statusCode == 200) {
+        log("TV shows fetched: ${response.data['results'].length} items");
+        List data = response.data['results'];
+        return data.map((e) => MovieModel.fromJSon(e)).toList();
+      }
+      throw Exception("Failed with status : ${response.statusCode}");
+    } catch (e) {
+      log("Error fetching the data: $e");
+      throw [];
+    }
+  }
+
+  Future<List<MovieModel>> movieSearh({required String movies}) async {
+    final searchUrl = "${Urls.search}$movies";
+    try {
+      final response = await dio.get(searchUrl);
+      if (response.statusCode == 200) {
+        log("Search results fetched: ${response.data['results'].length} items");
+        log(response.data.toString());
+        List data = response.data['results'];
+        return data.map((e) => MovieModel.fromJSon(e)).toList();
+      }
+      throw Exception("Failed with status. ${response.statusCode}");
+    } catch (e) {
+      log("Error fetching the results: $e");
+      throw Exception(e);
     }
   }
 }

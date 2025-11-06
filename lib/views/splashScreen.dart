@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:api_project/views/bottombar.dart';
 import 'package:api_project/views/getstarted/getstartedPage.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';

@@ -1,5 +1,5 @@
 import 'package:api_project/constants/image.dart';
-import 'package:api_project/views/widgets/customButton.dart';
+import 'package:api_project/views/getstarted/getStartingbutton.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

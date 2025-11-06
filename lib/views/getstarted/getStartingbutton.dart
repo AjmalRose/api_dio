@@ -1,4 +1,4 @@
-import 'package:api_project/views/bottombar.dart';
+import 'package:api_project/views/bottomNavigation/bottomNavigation.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -10,9 +10,9 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(
-          context,
-        ).pushReplacement(MaterialPageRoute(builder: (context) => Bottombar()));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => BottomNavigation()),
+        );
       },
       child: Container(
         width: size.width * .5,
@@ -40,7 +40,7 @@ class CustomButton extends StatelessWidget {
                 'Get Started',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
+                  color: Colors.red,
                   fontWeight: FontWeight.w900,
                 ),
               ),
